@@ -32,8 +32,8 @@ KeySym WindowManager::alt_keys[]=
 {
   XK_Delete,
   XK_End,
-  XK_Page_Up,
-  XK_Page_Down
+  XK_X,
+  XK_Z
 };
 
 WindowManager::WindowManager(int argc, char** argv)
@@ -471,10 +471,10 @@ void WindowManager::grabKeys(Window w)
 		max_desktop_keys=9;
 	}
   for(int i=0;i<AEWM_KEY_ALT_COUNT;i++)
-    XGrabKey(dpy, XkbKeycodeToKeysym(dpy, alt_keys[i], 0, 1), (Mod1Mask|ControlMask), w,True,GrabModeAsync,GrabModeAsync);
+    XGrabKey(dpy, XkbKeycodeToKeysym(dpy, alt_keys[i], 0, 1), (Mod4Mask), w,True,GrabModeAsync,GrabModeAsync);
 
   for(int i=0;i<AEWM_KEY_ALT_COUNT+max_desktop_keys;i++)
-		XGrabKey(dpy, XkbKeycodeToKeysym(dpy, alt_keys[i], 0, 1), (Mod1Mask),
+		XGrabKey(dpy, XkbKeycodeToKeysym(dpy, alt_keys[i], 0, 1), (Mod4Mask),
     w,True,GrabModeAsync,GrabModeAsync);
 }
 
@@ -487,9 +487,9 @@ void WindowManager::ungrabKeys(Window w)
 	}
   for(int i=0;i<AEWM_KEY_ALT_COUNT;i++)
   XUngrabKey(dpy,XKeysymToKeycode(dpy,alt_keys[i]),
-    (Mod1Mask|ControlMask),w);
+    (Mod4Mask),w);
   for(int i=0;i<AEWM_KEY_ALT_COUNT+max_desktop_keys;i++)
-		XUngrabKey(dpy,XKeysymToKeycode(dpy,alt_keys[i]), (Mod1Mask),w);
+		XUngrabKey(dpy,XKeysymToKeycode(dpy,alt_keys[i]), (Mod4Mask),w);
 }
 
 void WindowManager::handleKeyPressEvent(XEvent *ev) 
@@ -511,7 +511,7 @@ void WindowManager::handleKeyPressEvent(XEvent *ev)
     quitNicely();
 		break;
     
-  case XK_Page_Up: 
+  case XK_X: 
     if( current_desktop < max_desktops - 1 )
     {
       current_desktop++;
@@ -519,7 +519,7 @@ void WindowManager::handleKeyPressEvent(XEvent *ev)
     }
 		break;
 		
-  case XK_Page_Down: 
+  case XK_Z: 
     if( current_desktop > 0 )
     {
       current_desktop--;
@@ -574,7 +574,7 @@ void WindowManager::handleButtonPressEvent(XEvent *ev)
 		{
 			if( (ev->xbutton.button == Button1) && 
         (ev->xbutton.type==ButtonPress) && 
-      (ev->xbutton.state==Mod1Mask) &&
+      (ev->xbutton.state==Mod4Mask) &&
       (c->getFrameWindow() == ev->xbutton.window)
       )
       if(XGrabPointer(dpy, c->getFrameWindow(), False, 
