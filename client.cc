@@ -905,7 +905,8 @@ void Client::handleButtonEvent(XButtonEvent *e)
 
 				if (in_box) 
 				{
-					wm->sendWMDelete(window);
+					window_menu->hide();
+					iconify();
 				}
 				else
 					XRaiseWindow(dpy, frame);
@@ -961,8 +962,7 @@ void Client::handleButtonEvent(XButtonEvent *e)
 			{
 				if((!trans)&&(in_box))
 				{
-					window_menu->hide();
-					iconify();
+					wm->sendWMDelete(window);
 				}
 				else
 					shade();
